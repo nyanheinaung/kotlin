@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.cfg.pseudocode.PseudocodeUtil
 import org.jetbrains.kotlin.cfg.pseudocode.containingDeclarationForPseudocode
 import org.jetbrains.kotlin.idea.analysis.analyzeAsReplacement
 import org.jetbrains.kotlin.idea.caches.resolve.analyze
+import org.jetbrains.kotlin.idea.intentions.adjustIntent
 import org.jetbrains.kotlin.idea.intentions.loopToCallChain.result.*
 import org.jetbrains.kotlin.idea.intentions.loopToCallChain.sequence.*
 import org.jetbrains.kotlin.idea.project.builtIns
@@ -169,7 +170,8 @@ fun convertLoop(loop: KtForExpression, matchResult: MatchResult): KtExpression {
     }
 
     // we need to adjust indent of the result because in some cases it's made incorrect when moving statement closer to the loop
-    commentSaver.restore(commentSavingRangeHolder.range, forceAdjustIndent = true)
+    commentSaver.restore(commentSavingRangeHolder.range)
+    adjustIntent(result)
 
     return result
 }

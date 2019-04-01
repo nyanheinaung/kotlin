@@ -107,7 +107,9 @@ class FoldInitializerAndIfToElvisIntention :
             }
 
             commentSaver.restore(childRangeAfter)
-
+            if (commentSaver.needAdjustIndentAfterRestore) {
+                adjustIntent(declaration)
+            }
             return newElvis
         }
 

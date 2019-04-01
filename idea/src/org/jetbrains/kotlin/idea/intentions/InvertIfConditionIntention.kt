@@ -68,6 +68,10 @@ class InvertIfConditionIntention : SelfTargetingIntention<KtIfExpression>(KtIfEx
             }
         }
 
+        if (commentSaver.needAdjustIndentAfterRestore) {
+            adjustIntent(newIf)
+        }
+
         editor?.apply {
             unblockDocument()
             moveCaret(newIf.textOffset)

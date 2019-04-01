@@ -142,7 +142,9 @@ class CommentSaver(originalElements: PsiChildRange, private val saveLineBreaks: 
     private val commentsToRestore = ArrayList<CommentTreeElement>()
     private val lineBreaksToRestore = ArrayList<LineBreakTreeElement>()
     private var toNewPsiElementMap by Delegates.notNull<MutableMap<TreeElement, MutableCollection<PsiElement>>>()
-    private var needAdjustIndentAfterRestore = false
+
+    var needAdjustIndentAfterRestore = false
+        private set
 
     init {
         if (saveLineBreaks || originalElements.any { it.anyDescendantOfType<PsiComment>() }) {
@@ -240,19 +242,17 @@ class CommentSaver(originalElements: PsiChildRange, private val saveLineBreaks: 
     fun restore(
         resultElement: PsiElement,
         isCommentBeneathSingleLine: Boolean,
-        isCommentInside: Boolean,
-        forceAdjustIndent: Boolean
+        isCommentInside: Boolean
     ) {
-        restore(PsiChildRange.singleElement(resultElement), forceAdjustIndent, isCommentBeneathSingleLine, isCommentInside)
+        restore(PsiChildRange.singleElement(resultElement), isCommentBeneathSingleLine, isCommentInside)
     }
 
-    fun restore(resultElement: PsiElement, forceAdjustIndent: Boolean = false) {
-        restore(PsiChildRange.singleElement(resultElement), forceAdjustIndent)
+    fun restore(resultElement: PsiElement) {
+        restore(PsiChildRange.singleElement(resultElement))
     }
 
     fun restore(
         resultElements: PsiChildRange,
-        forceAdjustIndent: Boolean = false,
         isCommentBeneathSingleLine: Boolean = false,
         isCommentInside: Boolean = false
     ) {
@@ -291,18 +291,6 @@ class CommentSaver(originalElements: PsiChildRange, private val saveLineBreaks: 
                     })
                 }
             }
-        }
-
-        if (needAdjustIndentAfterRestore || forceAdjustIndent) {
-            val file = resultElements.first().containingFile
-            val project = file.project
-            val psiDocumentManager = PsiDocumentManager.getInstance(project)
-            val document = psiDocumentManager.getDocument(file)
-            if (document != null) {
-                psiDocumentManager.doPostponedOperationsAndUnblockDocument(document)
-                psiDocumentManager.commitDocument(document)
-            }
-            CodeStyleManager.getInstance(project).adjustLineIndent(file, resultElements.textRange)
         }
 
         isFinished = true

@@ -121,7 +121,11 @@ class AddBracesIntention : SelfTargetingIntention<KtElement>(KtElement::class.ja
         }
 
         // Check for single line expression with comment beneath.
-        saver.restore(result, isCommentBeneath, isCommentInside, forceAdjustIndent = false)
+        saver.restore(result, isCommentBeneath, isCommentInside)
+
+        if (saver.needAdjustIndentAfterRestore) {
+            adjustIntent(result)
+        }
     }
 
     private fun KtElement.getTargetExpression(caretLocation: Int): KtExpression? {

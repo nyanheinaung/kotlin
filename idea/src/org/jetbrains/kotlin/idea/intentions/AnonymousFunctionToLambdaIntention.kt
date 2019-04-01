@@ -32,9 +32,9 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getCalleeExpressionIfAny
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstance
 
 class AnonymousFunctionToLambdaIntention : SelfTargetingRangeIntention<KtNamedFunction>(
-        KtNamedFunction::class.java,
-        "Convert to lambda expression",
-        "Convert anonymous function to lambda expression"
+    KtNamedFunction::class.java,
+    "Convert to lambda expression",
+    "Convert anonymous function to lambda expression"
 ) {
     override fun applicabilityRange(element: KtNamedFunction): TextRange? {
         if (element.name != null) return null
@@ -60,7 +60,8 @@ class AnonymousFunctionToLambdaIntention : SelfTargetingRangeIntention<KtNamedFu
 
             val parameters = element.valueParameters
 
-            val needParameters = parameters.count() > 1 || parameters.any { parameter -> ReferencesSearch.search(parameter, LocalSearchScope(body)).any() }
+            val needParameters =
+                parameters.count() > 1 || parameters.any { parameter -> ReferencesSearch.search(parameter, LocalSearchScope(body)).any() }
             if (needParameters) {
                 parameters.forEachIndexed { index, parameter ->
                     if (index > 0) {
@@ -74,8 +75,7 @@ class AnonymousFunctionToLambdaIntention : SelfTargetingRangeIntention<KtNamedFu
 
             if (element.hasBlockBody()) {
                 appendChildRange((body as KtBlockExpression).contentRange())
-            }
-            else {
+            } else {
                 appendExpression(body)
             }
 
@@ -83,13 +83,16 @@ class AnonymousFunctionToLambdaIntention : SelfTargetingRangeIntention<KtNamedFu
         }
 
         val replaced = element.replaced(newExpression) as KtLambdaExpression
-        commentSaver.restore(replaced, forceAdjustIndent = true/* by some reason lambda body is sometimes not properly indented */)
+        commentSaver.restore(replaced)
 
         val callExpression = replaced.parents.firstIsInstance<KtCallExpression>()
         val callee = callExpression.getCalleeExpressionIfAny()!! as KtNameReferenceExpression
 
         val returnLabel = callee.getReferencedNameAsName()
         returnSaver.restore(replaced, returnLabel)
+
+        /* by some reason lambda body is sometimes not properly indented */
+        adjustIntent(replaced)
 
         callExpression.getLastLambdaExpression()?.moveFunctionLiteralOutsideParenthesesIfPossible()
     }

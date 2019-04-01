@@ -16,7 +16,9 @@
 
 package org.jetbrains.kotlin.idea.intentions
 
+import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
+import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.tree.IElementType
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
@@ -60,6 +62,19 @@ fun KtContainerNode.description(): String? {
     }
     return null
 }
+
+fun adjustIntent(element: PsiElement) {
+    val file = element.containingFile
+    val project = file.project
+    val psiDocumentManager = PsiDocumentManager.getInstance(project)
+    val document = psiDocumentManager.getDocument(file)
+    if (document != null) {
+        psiDocumentManager.doPostponedOperationsAndUnblockDocument(document)
+        psiDocumentManager.commitDocument(document)
+    }
+    CodeStyleManager.getInstance(project).adjustLineIndent(file, element.textRange)
+}
+
 
 fun KtCallExpression.isMethodCall(fqMethodName: String): Boolean {
     val resolvedCall = this.resolveToCall() ?: return false
