@@ -44,6 +44,7 @@ dependencies {
     
     testCompile(kotlinStdlib())
 
+    testCompile(project(":kotlin-daemon"))
     testCompile(commonDep("junit:junit"))
     testCompileOnly(project(":kotlin-test:kotlin-test-jvm"))
     testCompileOnly(project(":kotlin-test:kotlin-test-junit"))
@@ -71,8 +72,8 @@ dependencies {
 
     testRuntime(project(":kotlin-reflect"))
     testRuntime(project(":kotlin-daemon-client-new"))
-    testRuntime(project(":compiler:daemon")) // +
-    testRuntime(project(":compiler:daemon-common-new")) // +
+    testRuntime(project(":kotlin-daemon")) // +
+    testRuntime(project(":daemon-common-new")) // +
     testRuntime(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8")) {
         isTransitive = false
     }
