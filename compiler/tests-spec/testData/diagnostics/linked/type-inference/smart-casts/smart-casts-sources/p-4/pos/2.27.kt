@@ -63,7 +63,7 @@ fun Int?.case_4() {
 }
 
 // TESTCASE NUMBER: 5
-fun Int?.case_4() {
+fun Int?.case_5() {
     val x = this
     x!!
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?"), DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>this<!>

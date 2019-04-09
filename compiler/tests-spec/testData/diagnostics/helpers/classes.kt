@@ -20,7 +20,9 @@ class Class {
     operator fun set(i1: Int, i2: Int, el: Int) {}
     operator fun get(i1: Int) = 10
     operator fun set(i1: Int, el: Int) {}
-    operator fun invoke(y: Int, z: Int) {}
+    operator fun invoke() {}
+    operator fun invoke(x) = { x: Any -> x }
+    operator fun invoke(x: Any, y: Any) {}
     operator fun contains(a: Int) = a > 30
     operator fun contains(a: Long) = a > 30L
     operator fun contains(a: Char) = a > 30.toChar()
@@ -38,6 +40,9 @@ class Class {
 open class ClassWithCustomEquals {
     override fun equals(other: Any?) = true
 }
+
+open class ClassWithCostructorParam(val x: Any)
+open class ClassWithCostructorTwoParams(val x: Any, val y: Any)
 
 class EmptyClass {}
 
@@ -68,6 +73,7 @@ class Inv<T>(val x: T = null as T) {
     val prop_1: Inv<T>? = null
     val prop_2: T? = null
     val prop_3: T = null
+    val prop_4 = 10
 
     fun test() {}
     fun get() = x
@@ -103,4 +109,6 @@ open class ClassWithSixTypeParameters<K, in L, out M, O, in P, out R>(
     val x: K,
     val y: M,
     val z: O
-)
+) {
+    fun test() = 10
+}

@@ -131,7 +131,10 @@ fun case_6() {
     }
 }
 
-// TESTCASE NUMBER: 7
+/*
+ * TESTCASE NUMBER: 7
+ * UNEXPECTED BEHAVIOUR
+ */
 fun case_7() {
     val d = ClassLevel1()
     var e: Any?

@@ -7,12 +7,15 @@
  *
  * SPEC VERSION: 0.1-draft
  * PLACE: type-inference, smart-casts, smart-casts-sources -> paragraph 4 -> sentence 2
- * NUMBER: 16
+ * NUMBER: 18
  * DESCRIPTION: Smartcasts from nullability condition (value or reference equality) using if expression and simple types.
  * HELPERS: classes, objects, typealiases, enumClasses, interfaces, sealedClasses
  */
 
-// TESTCASE NUMBER: 1
+/* TESTCASE NUMBER: 1
+ * UNEXPECTED BEHAVIOUR
+ * ISSUES: KT-30756
+ */
 fun case_1(x: Any?) {
     while (true) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>x<!> ?: return
@@ -33,7 +36,10 @@ fun case_2(x: Any?) {
     <!UNREACHABLE_CODE!><!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?"), DEBUG_INFO_SMARTCAST!>x<!>.equals(10)<!>
 }
 
-// TESTCASE NUMBER: 3
+/* TESTCASE NUMBER: 3
+ * UNEXPECTED BEHAVIOUR
+ * ISSUES: KT-30756
+ */
 fun case_3(x: Any?) {
     while (true) {
         x ?: return <!USELESS_ELVIS!>?: <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?"), DEBUG_INFO_SMARTCAST!>x<!><!>

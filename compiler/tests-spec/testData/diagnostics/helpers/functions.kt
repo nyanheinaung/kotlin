@@ -23,3 +23,6 @@ fun <T> T?.funNullableT = 10
 
 fun Any.funAny() = 10
 fun Any?.funNullableAny = 10
+
+
+fun funNothingQuest() = null

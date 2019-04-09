@@ -198,3 +198,24 @@ fun case_16(x: Boolean?) {
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Boolean?")!>x<!>
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Boolean?")!>x<!><!UNSAFE_CALL!>.<!>equals(10)
 }
+
+// TESTCASE NUMBER: 17
+fun case_17(x: Boolean?, y: Boolean?) {
+    loop@ while (true) {
+        when (y) {
+            true -> x!!
+            false -> x!!
+            null -> if (true) if (true) if (true) if (true) if (true) when (<!DEBUG_INFO_CONSTANT!>y<!>) {
+                true -> when (<!DEBUG_INFO_SMARTCAST!>y<!>) {
+                    else -> if (true) if (true) if (true) if (true) if (true) x!! else x!! else x!! else x!! else x!! else x!!
+                }
+                false -> x!!
+                null -> if (true) if (true) if (true) if (true) if (true) x!! else x!! else x!! else x!! else x!! else x!!
+            } else x!! else x!! else x!! else x!! else x!!
+        }
+        break@loop
+    }
+
+    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Boolean & kotlin.Boolean?")!>x<!>
+    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Boolean & kotlin.Boolean?"), DEBUG_INFO_SMARTCAST!>x<!>.not()
+}

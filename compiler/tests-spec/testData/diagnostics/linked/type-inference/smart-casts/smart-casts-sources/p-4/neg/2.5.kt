@@ -39,10 +39,8 @@ fun case_3(x: Any?) {
 // TESTCASE NUMBER: 4
 fun case_4(x: Any) {
     if (x !is EnumClass || <!USELESS_IS_CHECK!>x !is EnumClass<!> || <!USELESS_IS_CHECK!>x !is EnumClass<!> || <!USELESS_IS_CHECK!>x is EnumClass<!>) else {
-        if (<!SYNTAX!><!>) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("EnumClass & kotlin.Any")!>x<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("EnumClass & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.fun_1()
-        }
+        <!DEBUG_INFO_EXPRESSION_TYPE("EnumClass & kotlin.Any")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("EnumClass & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.fun_1()
     }
 }
 

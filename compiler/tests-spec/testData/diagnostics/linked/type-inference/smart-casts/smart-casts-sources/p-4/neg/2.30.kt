@@ -7,7 +7,7 @@
  *
  * SPEC VERSION: 0.1-draft
  * PLACE: type-inference, smart-casts, smart-casts-sources -> paragraph 4 -> sentence 2
- * NUMBER: 16
+ * NUMBER: 30
  * DESCRIPTION: Smartcasts from nullability condition (value or reference equality) using if expression and simple types.
  * HELPERS: classes, objects, typealiases, enumClasses, interfaces, sealedClasses
  */
