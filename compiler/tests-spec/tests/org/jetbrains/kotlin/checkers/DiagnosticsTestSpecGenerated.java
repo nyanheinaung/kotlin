@@ -1012,6 +1012,11 @@ public class DiagnosticsTestSpecGenerated extends AbstractDiagnosticsTestSpec {
                                 runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.31.kt");
                             }
 
+                            @TestMetadata("2.32.kt")
+                            public void test2_32() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.32.kt");
+                            }
+
                             @TestMetadata("2.4.kt")
                             public void test2_4() throws Exception {
                                 runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.4.kt");
@@ -1283,6 +1288,21 @@ public class DiagnosticsTestSpecGenerated extends AbstractDiagnosticsTestSpec {
                             @TestMetadata("2.34.kt")
                             public void test2_34() throws Exception {
                                 runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.34.kt");
+                            }
+
+                            @TestMetadata("2.35.kt")
+                            public void test2_35() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.35.kt");
+                            }
+
+                            @TestMetadata("2.36.kt")
+                            public void test2_36() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.36.kt");
+                            }
+
+                            @TestMetadata("2.37.kt")
+                            public void test2_37() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.37.kt");
                             }
 
                             @TestMetadata("2.4.kt")
