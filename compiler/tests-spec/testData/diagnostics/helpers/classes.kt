@@ -10,6 +10,7 @@ class Class {
     var prop_9: Boolean = true
     val prop_10: Number? = 3f
     val prop_11: Int = 10
+    var prop_12: String = ""
 
     fun fun_1(): (Int) -> (Int) -> Int = {number: Int -> { number * 5 }}
     fun fun_2(value_1: Int): Int = value_1 * 2
