@@ -76,9 +76,13 @@ open class FirBodyResolveTransformer(val session: FirSession, val implicitTypeOn
     }
 
 
-    inline fun <T> withLabel(labelName: Name, type: ConeKotlinType, block: () -> T): T {
+    private inline fun <T> withLabelAndReceiverType(labelName: Name, type: ConeKotlinType, block: () -> T): T {
         labels.put(labelName, type)
+        // TODO: it's a bit more complex when related to classes
+        // E.g. we cannot access receiver of outer class from a nested class
+        implicitReceiverStack += type
         val result = block()
+        implicitReceiverStack.removeAt(implicitReceiverStack.size - 1)
         labels.remove(labelName, type)
         return result
     }
@@ -87,7 +91,7 @@ open class FirBodyResolveTransformer(val session: FirSession, val implicitTypeOn
         return withScopeCleanup(scopes) {
             val type = regularClass.defaultType()
             scopes.addIfNotNull(type.scope(session))
-            withLabel(regularClass.name, type) {
+            withLabelAndReceiverType(regularClass.name, type) {
                 super.transformRegularClass(regularClass, data)
             }
         }
@@ -133,12 +137,13 @@ open class FirBodyResolveTransformer(val session: FirSession, val implicitTypeOn
     }
 
     val scopes = mutableListOf<FirScope>()
-    val localScopes = mutableListOf<FirLocalScope>()
+    private val localScopes = mutableListOf<FirLocalScope>()
 
-    val labels = LinkedHashMultimap.create<Name, ConeKotlinType>()
+    private val labels = LinkedHashMultimap.create<Name, ConeKotlinType>()
 
+    private val implicitReceiverStack = mutableListOf<ConeKotlinType>()
 
-    val jump = ReturnTypeCalculatorWithJump(session)
+    private val jump = ReturnTypeCalculatorWithJump(session)
 
     private fun <T> storeTypeFromCallee(access: T) where T : FirQualifiedAccess, T : FirExpression {
         access.resultType = typeFromCallee(access)
@@ -165,7 +170,7 @@ open class FirBodyResolveTransformer(val session: FirSession, val implicitTypeOn
         }
     }
 
-    val inferenceComponents = InferenceComponents(object : ConeInferenceContext, TypeSystemInferenceExtensionContextDelegate {
+    private val inferenceComponents = InferenceComponents(object : ConeInferenceContext, TypeSystemInferenceExtensionContextDelegate {
         override fun findCommonIntegerLiteralTypesSuperType(explicitSupertypes: List<SimpleTypeMarker>): SimpleTypeMarker? {
             TODO("not implemented")
         }
@@ -193,7 +198,7 @@ open class FirBodyResolveTransformer(val session: FirSession, val implicitTypeOn
             callee.name,
             info, inferenceComponents
         )
-        val result = resolver.runTowerResolver(consumer)
+        val result = resolver.runTowerResolver(consumer, implicitReceiverStack.asReversed())
 
         val nameReference = createResolvedNamedReference(
             callee,
@@ -260,7 +265,7 @@ open class FirBodyResolveTransformer(val session: FirSession, val implicitTypeOn
         resolver.scopes = (scopes + localScopes).asReversed()
 
         val consumer = createFunctionConsumer(session, name, info, inferenceComponents)
-        val result = resolver.runTowerResolver(consumer)
+        val result = resolver.runTowerResolver(consumer, implicitReceiverStack.asReversed())
         val bestCandidates = result.bestCandidates()
         val reducedCandidates = ConeOverloadConflictResolver(TypeSpecificityComparator.NONE, inferenceComponents)
             .chooseMaximallySpecificCandidates(bestCandidates, discriminateGenerics = false)
@@ -493,7 +498,7 @@ open class FirBodyResolveTransformer(val session: FirSession, val implicitTypeOn
         }
 
         return if (receiverTypeRef != null) {
-            withLabel(namedFunction.name, receiverTypeRef.coneTypeUnsafe()) { transform() }
+            withLabelAndReceiverType(namedFunction.name, receiverTypeRef.coneTypeUnsafe()) { transform() }
         } else {
             transform()
         }

@@ -32,7 +32,7 @@ class CandidateFactory(
         boundDispatchReceiver: ReceiverValueWithPossibleTypes?,
         explicitReceiverKind: ExplicitReceiverKind
     ): Candidate {
-        return Candidate(symbol, explicitReceiverKind, inferenceComponents, baseSystem)
+        return Candidate(symbol, boundDispatchReceiver, explicitReceiverKind, inferenceComponents, baseSystem)
     }
 }
 

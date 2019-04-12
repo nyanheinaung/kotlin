@@ -61,6 +61,7 @@ class CheckerSinkImpl : CheckerSink {
 
 class Candidate(
     val symbol: ConeSymbol,
+    val boundDispatchReceiver: ReceiverValueWithPossibleTypes?,
     val receiverKind: ExplicitReceiverKind,
     private val inferenceComponents: InferenceComponents,
     private val baseSystem: ConstraintStorage
@@ -209,7 +210,7 @@ class ScopeTowerLevel(
 abstract class TowerDataConsumer {
     abstract fun consume(
         kind: TowerDataKind,
-        implicitReceiverType: ConeKotlinType?,
+        implicitReceiverTypes: List<ConeKotlinType>,
         towerScopeLevel: TowerScopeLevel,
         resultCollector: CandidateCollector,
         group: Int
@@ -298,14 +299,14 @@ class PrioritizedTowerDataConsumer(
 
     override fun consume(
         kind: TowerDataKind,
-        implicitReceiverType: ConeKotlinType?,
+        implicitReceiverTypes: List<ConeKotlinType>,
         towerScopeLevel: TowerScopeLevel,
         resultCollector: CandidateCollector,
         group: Int
     ): ProcessorAction {
         if (checkSkip(group, resultCollector)) return ProcessorAction.NEXT
         for ((index, consumer) in consumers.withIndex()) {
-            val action = consumer.consume(kind, implicitReceiverType, towerScopeLevel, resultCollector, group * consumers.size + index)
+            val action = consumer.consume(kind, implicitReceiverTypes, towerScopeLevel, resultCollector, group * consumers.size + index)
             if (action.stop()) {
                 return ProcessorAction.STOP
             }
@@ -325,7 +326,7 @@ class ExplicitReceiverTowerDataConsumer<T : ConeSymbol>(
 
     override fun consume(
         kind: TowerDataKind,
-        implicitReceiverType: ConeKotlinType?,
+        implicitReceiverTypes: List<ConeKotlinType>,
         towerScopeLevel: TowerScopeLevel,
         resultCollector: CandidateCollector,
         group: Int
@@ -387,7 +388,7 @@ class NoExplicitReceiverTowerDataConsumer<T : ConeSymbol>(
 
     override fun consume(
         kind: TowerDataKind,
-        implicitReceiverType: ConeKotlinType?,
+        implicitReceiverTypes: List<ConeKotlinType>,
         towerScopeLevel: TowerScopeLevel,
         resultCollector: CandidateCollector,
         group: Int
@@ -423,15 +424,15 @@ class CallResolver(val typeCalculator: ReturnTypeCalculator, val session: FirSes
 
     var scopes: List<FirScope>? = null
 
-    fun runTowerResolver(towerDataConsumer: TowerDataConsumer): CandidateCollector {
+    fun runTowerResolver(towerDataConsumer: TowerDataConsumer, implicitReceiverTypes: List<ConeKotlinType>): CandidateCollector {
         val collector = CandidateCollector(callInfo!!)
 
         var group = 0
 
-        towerDataConsumer.consume(TowerDataKind.EMPTY, null, TowerScopeLevel.Empty, collector, group++)
+        towerDataConsumer.consume(TowerDataKind.EMPTY, implicitReceiverTypes, TowerScopeLevel.Empty, collector, group++)
 
         for (scope in scopes!!) {
-            towerDataConsumer.consume(TowerDataKind.TOWER_LEVEL, null, ScopeTowerLevel(session, scope), collector, group++)
+            towerDataConsumer.consume(TowerDataKind.TOWER_LEVEL, implicitReceiverTypes, ScopeTowerLevel(session, scope), collector, group++)
         }
 
         return collector
