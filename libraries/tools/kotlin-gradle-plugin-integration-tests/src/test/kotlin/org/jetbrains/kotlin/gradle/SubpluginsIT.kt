@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.gradle
 
+import org.jetbrains.kotlin.gradle.scripting.internal.ScriptingGradleSubplugin
 import org.jetbrains.kotlin.gradle.util.checkBytecodeContains
 import org.jetbrains.kotlin.gradle.util.modify
 import org.junit.Test
@@ -145,24 +146,31 @@ class SubpluginsIT : BaseGradleIT() {
         val greetScriptTemplateKt = project.projectFile("GreetScriptTemplate.kt")
 
         project.build("build", options = options) {
-            assertSuccessful()
-            val classesDir = kotlinClassesDir("app", "main")
-            assertFileExists("${classesDir}World.class")
-            assertFileExists("${classesDir}Alice.class")
-            assertFileExists("${classesDir}Bob.class")
+            if (ScriptingGradleSubplugin.isCompatibleWithGradleVersion()) {
+                assertSuccessful()
+                val classesDir = kotlinClassesDir("app", "main")
+                assertFileExists("${classesDir}World.class")
+                assertFileExists("${classesDir}Alice.class")
+                assertFileExists("${classesDir}Bob.class")
 
-            if (withIC) {
-                // compile iterations are not logged when IC is disabled
-                assertCompiledKotlinSources(project.relativize(bobGreet, aliceGreet, worldGreet, greetScriptTemplateKt))
+                if (withIC) {
+                    // compile iterations are not logged when IC is disabled
+                    assertCompiledKotlinSources(project.relativize(bobGreet, aliceGreet, worldGreet, greetScriptTemplateKt))
+                }
+            } else {
+                assertFailed()
+                assertContains("kotlin scripting plugin: unsupported gradle version")
             }
         }
 
-        bobGreet.modify { it.replace("Bob", "Uncle Bob") }
-        project.build("build", options = options) {
-            assertSuccessful()
+        if (ScriptingGradleSubplugin.isCompatibleWithGradleVersion()) {
+            bobGreet.modify { it.replace("Bob", "Uncle Bob") }
+            project.build("build", options = options) {
+                assertSuccessful()
 
-            if (withIC) {
-                assertCompiledKotlinSources(project.relativize(bobGreet))
+                if (withIC) {
+                    assertCompiledKotlinSources(project.relativize(bobGreet))
+                }
             }
         }
     }
