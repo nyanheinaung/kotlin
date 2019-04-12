@@ -1042,9 +1042,24 @@ public class DiagnosticsTestSpecGenerated extends AbstractDiagnosticsTestSpec {
                                 runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.37.kt");
                             }
 
+                            @TestMetadata("2.38.kt")
+                            public void test2_38() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.38.kt");
+                            }
+
+                            @TestMetadata("2.39.kt")
+                            public void test2_39() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.39.kt");
+                            }
+
                             @TestMetadata("2.4.kt")
                             public void test2_4() throws Exception {
                                 runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.4.kt");
+                            }
+
+                            @TestMetadata("2.40.kt")
+                            public void test2_40() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/neg/2.40.kt");
                             }
 
                             @TestMetadata("2.5.kt")
@@ -1358,6 +1373,31 @@ public class DiagnosticsTestSpecGenerated extends AbstractDiagnosticsTestSpec {
                             @TestMetadata("2.42.kt")
                             public void test2_42() throws Exception {
                                 runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.42.kt");
+                            }
+
+                            @TestMetadata("2.43.kt")
+                            public void test2_43() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.43.kt");
+                            }
+
+                            @TestMetadata("2.44.kt")
+                            public void test2_44() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.44.kt");
+                            }
+
+                            @TestMetadata("2.45.kt")
+                            public void test2_45() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.45.kt");
+                            }
+
+                            @TestMetadata("2.46.kt")
+                            public void test2_46() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.46.kt");
+                            }
+
+                            @TestMetadata("2.47.kt")
+                            public void test2_47() throws Exception {
+                                runTest("compiler/tests-spec/testData/diagnostics/linked/type-inference/smart-casts/smart-casts-sources/p-4/pos/2.47.kt");
                             }
 
                             @TestMetadata("2.5.kt")

@@ -38,6 +38,11 @@ class Class {
     }
 }
 
+operator fun Class?.inc(): Class? = null
+operator fun Class?.dec(): Class? = null
+operator fun Class?.plus(x: Class?): Class? = null
+operator fun Class?.minus(x: Class?): Class? = null
+
 open class ClassWithCustomEquals {
     override fun equals(other: Any?) = true
 }

@@ -38,3 +38,11 @@ class Case4(val y: Any?): ClassWithCostructorParam(y!!) {
 
 // TESTCASE NUMBER: 5
 class Case5(val y: Any?): ClassWithCostructorParam(y as Interface1), Interface1 by <!TYPE_MISMATCH, TYPE_MISMATCH!>y<!> {}
+
+// TESTCASE NUMBER: 6
+fun case_6(a: Int?) = object : ClassWithCostructorParam(a!!) {
+    fun run() = a<!UNSAFE_CALL!>.<!>toShort()
+    init {
+        println(a<!UNSAFE_CALL!>.<!>toShort())
+    }
+}
