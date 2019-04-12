@@ -1,3 +1,8 @@
+/*
+ * Copyright 2010-2019 JetBrains s.r.o. and Kotlin Project contributors. Use of this source code is governed
+ * by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
+ */
+
 @file:Suppress("PackageDirectoryMismatch")
 package org.jetbrains.kotlin.ideaExt
 
@@ -8,7 +13,7 @@ import org.gradle.plugins.ide.idea.model.IdeaProject
 import org.jetbrains.gradle.ext.*
 
 /*
- * Copyright 2010-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license
+ * Copyright 2010-2019 JetBrains s.r.o. and Kotlin Project contributors. Use of this source code is governed by the Apache 2.0 license
  * that can be found in the license/LICENSE.txt file.
  */
 
