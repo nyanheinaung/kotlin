@@ -1,8 +1,3 @@
-tasks.withType<Test> {
-    //TODO: support parallelizarion
-    //maxParallelForks = Math.max(Runtime.getRuntime().availableProcessors() / 2, 1)
-}
-
 plugins {
     kotlin("jvm")
     id("jps-compatible")
@@ -77,6 +72,8 @@ testsJar()
 projectTest {
     workingDir = rootDir
     useAndroidSdk()
+    //TODO: support parallelizarion
+    //maxParallelForks = Math.max(Runtime.getRuntime().availableProcessors() / 2, 1)
 }
 
 configureFormInstrumentation()
