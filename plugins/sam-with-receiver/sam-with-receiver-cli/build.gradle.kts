@@ -1,4 +1,3 @@
-
 description = "Kotlin SamWithReceiver Compiler Plugin"
 
 plugins {
@@ -37,4 +36,5 @@ dist {
 projectTest {
     dependsOn(":kotlin-stdlib:jvm-minimal-for-test:dist")
     workingDir = rootDir
+    maxParallelForks = Math.max(Runtime.getRuntime().availableProcessors() / 2, 1)
 }

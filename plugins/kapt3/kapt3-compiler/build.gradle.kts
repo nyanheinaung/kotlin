@@ -1,10 +1,6 @@
 
 description = "Annotation Processor for Kotlin"
 
-tasks.withType<Test> {
-    maxParallelForks = Math.max(Runtime.getRuntime().availableProcessors() / 2, 1)
-}
-
 plugins {
     kotlin("jvm")
     id("jps-compatible")
@@ -52,6 +48,9 @@ testsJar {}
 projectTest {
     workingDir = rootDir
     dependsOn(":dist")
+}
+tasks.withType<Test> {
+    maxParallelForks = Math.max(Runtime.getRuntime().availableProcessors() / 2, 1)
 }
 
 publish()

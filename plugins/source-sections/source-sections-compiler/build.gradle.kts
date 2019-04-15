@@ -1,4 +1,3 @@
-
 description = "Kotlin SourceSections Compiler Plugin"
 
 plugins {
@@ -36,6 +35,7 @@ sourceSets {
 
 projectTest {
     workingDir = rootDir
+    maxParallelForks = Math.max(Runtime.getRuntime().availableProcessors() / 2, 1)
 }
 
 publish()
